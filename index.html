@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Risikovurdering App - Punkt 443.5</title>
+
+```
+<!-- PWA Meta tags -->
+<meta name="description" content="Beregn CRL-værdi for overspændingsbeskyttelse efter DS/HD 60364-4-443:2016">
+<meta name="theme-color" content="#3498db">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="CRL Risikovurdering">
+
+<!-- PWA Manifest -->
+<link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIkNSTCBSaXNpa292dXJkZXJpbmciLAogICJzaG9ydF9uYW1lIjogIkNSTCBBcHAiLAogICJkZXNjcmlwdGlvbiI6ICJCZXJlZ24gQ1JMLXbDpnJkaSBmb3Igb3ZlcnNww6ZuZGluZ3NiZXNreXR0ZWxzZSBzZnRlciBEUy9IRCBzdGFuZGFyZGVuIiwKICAic3RhcnRfdXJsIjogIi4vIiwKICAiZGlzcGxheSI6ICJzdGFuZGFsb25lIiwKICAiYmFja2dyb3VuZF9jb2xvciI6ICIjNjY3ZWVhIiwKICAidGhlbWVfY29sb3IiOiAiIzM0OThkYiIsCiAgImljb25zIjogWwogICAgewogICAgICAic3JjIjogImRhdGE6aW1hZ2Uvc3ZnK3htbDtiYXNlNjQsUEhOMlp5QjNhV1IwYUQwaU1UazJJaUJvWldsbmFIUTlJakU1TmlJZ2RtbGxkMEp2ZUQwaU1DQXdJREU1TmlBeE9UWWlJR1pwYkd3OUluTnZiR2xrSWlCNGJXeHVjejBpYUhSMGNEb3ZMM2QzZHk1M015NXZjbWN2TWpBd01DOXpkbWNpUGp4eVpXTjBJSGc5SWpFMElpQjVQU0l4TkNJZ2QybGtkR2c5SWpFMk9DSWdhR1ZwWjJoMFBTSXhOamdpSUhKNFBTSTRJaUJtYVd4c1BTSWpObU0zWldWaklpOCtQSFJsZUhRZ2VEMGlPVGdpSUhrOUlqYzJJaUJtYVd4c1BTSWpabVptWm1abUlpQm1iMjUwTFdGdGFXeDVQU0pCY21saGJDSWdabTl1ZEMxemFYcGxQU0l5T0NJZ1ptOXVkQzEzWldsbmFIUTlJbUp2YkdRaUlIUmxlSFF0WVc1amFHOXlQU0p0YVdSa2JHVWlQa05TVEM4dmRHVjRkRDQ4TDNOMlp6ND0iLAogICAgICAic2l6ZXMiOiAiMTk2eDE5NiIsCiAgICAgICJ0eXBlIjogImltYWdlL3N2Zyt4bWwiCiAgICB9LAogICAgewogICAgICAic3JjIjogImRhdGE6aW1hZ2Uvc3ZnK3htbDtiYXNlNjQsUEhOMlp5QjNhV1IwYUQwaU5URXlJaUJvWldsbmFIUTlJalV4TWlJZ2RtbGxkMEp2ZUQwaU1DQXdJRFV4TWlBMU1USWlJR1pwYkd3OUluTnZiR2xrSWlCNGJXeHVjejBpYUhSMGNEb3ZMM2QzZHk1M015NXZjbWN2TWpBd01DOXpkbWNpUGp4eVpXTjBJSGc5SWpNNElpQjVQU0k0SWlCM2FXUjBhRDBpTkRNMklpQm9aV2xuYUhROUlqUXpOaUlnY25nOUlqSXdJaUJtYVd4c1BTSWpObU0zWldWaUlpOCtQSFJsZUhRZ2VEMGlNalUySWlCNVBTSXlNekFpSUdacGJHdzlJaU5tWm1abVptWWlJR1p2Ym5RdFlXMXBiSGs5SWtGeWFXRnNJaUJtYjI1MExYTnBlbVU5SWpjeU9DSWdabTl1ZEMxM1pXbG5hSFE5SW1KdmJHUWlJSFJsZUhRdFlXNWphRzl5UFNKdGFXUmtiR1VpUGtOU1REd3ZkR1Y0ZEQ0OEwzTjJaejQ9IiwKICAgICAgInNpemVzIjogIjUxMng1MTIiLAogICAgICAidHlwZSI6ICJpbWFnZS9zdmcreG1sIgogICAgfQogIF0KfQo=">
+
+<!-- Apple Touch Icons -->
+<link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTk2IiBoZWlnaHQ9IjE5NiIgdmlld0JveD0iMCAwIDE5NiAxOTYiIGZpbGw9InNvbGlkIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHg9IjE0IiB5PSIxNCIgd2lkdGg9IjE2OCIgaGVpZ2h0PSIxNjgiIHJ4PSI4IiBmaWxsPSIjNmM3ZWVhIi8+PHRleHQgeD0iOTgiIHk9Ijc2IiBmaWxsPSIjZmZmZmZmIiBmb250LWFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIyOCIgZm9udC13ZWlnaHQ9ImJvbGQiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkNSTDwvdGV4dD48L3N2Zz4=">
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        padding: 20px;
+    }
+    
+    .container {
+        max-width: 900px;
+        margin: 0 auto;
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        overflow: hidden;
+        animation: slideIn 0.8s ease-out;
+    }
+    
+    @keyframes slideIn {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    .header {
+        background: linear-gradient(135deg, #2c3e50, #3498db);
+        color: white;
+        padding: 30px;
+        text-align: center;
+    }
+    
+    .header h1 {
+        font-size: 2.5rem;
+        font-weight: 300;
+        margin-bottom: 10px;
+    }
+    
+    .header p {
+        font-size: 1.1rem;
+        opacity: 0.9;
+    }
+    
+    .info-box {
+        background: #e8f4f8;
+        border-left: 5px solid #3498db;
+        padding: 20px;
+        margin: 20px 0;
+        border-radius: 5px;
+    }
+    
+    .info-box h3 {
+        color: #2c3e50;
+        margin-bottom: 10px;
+        font-size: 1.2rem;
+    }
+    
+    .info-box ul {
+        margin-left: 20px;
+        line-height: 1.6;
+    }
+    
+    .info-box li {
+        margin-bottom: 5px;
+    }
+    
+    .form-container {
+        padding: 40px;
+    }
+    
+    .input-group {
+        margin-bottom: 30px;
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 10px;
+        border: 2px solid #ecf0f1;
+    }
+    
+    .input-group:hover {
+        border-color: #bdc3c7;
+        transform: translateY(-2px);
+        transition: all 0.3s ease;
+    }
+    
+    .input-group label {
+        display: block;
+        margin-bottom: 10px;
+        font-weight: 700;
+        color: #2c3e50;
+        font-size: 1.1rem;
+    }
+    
+    .input-group input, .input-group select {
+        width: 100%;
+        padding: 15px;
+        border: 2px solid #ecf0f1;
+        border-radius: 8px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        background: white;
+    }
+    
+    .input-group input:focus, .input-group select:focus {
+        outline: none;
+        border-color: #3498db;
+        box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+    }
+    
+    .input-description {
+        font-size: 0.95rem;
+        color: #7f8c8d;
+        margin-top: 8px;
+        line-height: 1.4;
+    }
+    
+    .measurement-guide {
+        background: #fff3cd;
+        border: 1px solid #ffeaa7;
+        padding: 15px;
+        border-radius: 5px;
+        margin-top: 10px;
+        font-size: 0.9rem;
+    }
+    
+    .measurement-guide strong {
+        color: #856404;
+    }
+    
+    .unit-toggle {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 10px;
+    }
+    
+    .unit-toggle input[type="radio"] {
+        width: auto;
+    }
+    
+    .unit-display {
+        font-weight: bold;
+        color: #e74c3c;
+        font-size: 1.1rem;
+    }
+    
+    .calculate-btn {
+        width: 100%;
+        background: linear-gradient(135deg, #27ae60, #2ecc71);
+        color: white;
+        padding: 20px;
+        border: none;
+        border-radius: 10px;
+        font-size: 1.3rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+    
+    .calculate-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 30px rgba(46, 204, 113, 0.4);
+    }
+    
+    .result {
+        margin-top: 30px;
+        padding: 25px;
+        border-radius: 15px;
+        text-align: center;
+        opacity: 0;
+        transform: translateY(20px);
+        transition: all 0.5s ease;
+    }
+    
+    .result.show {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    
+    .result.safe {
+        background: linear-gradient(135deg, #2ecc71, #27ae60);
+        color: white;
+    }
+    
+    .result.unsafe {
+        background: linear-gradient(135deg, #e74c3c, #c0392b);
+        color: white;
+    }
+    
+    .result h3 {
+        font-size: 1.8rem;
+        margin-bottom: 15px;
+        font-weight: 300;
+    }
+    
+    .result p {
+        font-size: 1.1rem;
+        margin-bottom: 10px;
+    }
+    
+    .crl-value {
+        font-size: 2.5rem;
+        font-weight: bold;
+        margin: 20px 0;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    }
+    
+    .formula-display {
+        background: #f8f9fa;
+        border-left: 4px solid #3498db;
+        padding: 20px;
+        margin: 20px 0;
+        border-radius: 5px;
+        font-family: 'Courier New', monospace;
+    }
+    
+    .calculation-details {
+        margin-top: 20px;
+        padding: 20px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 10px;
+        text-align: left;
+    }
+    
+    .calculation-details h4 {
+        margin-bottom: 10px;
+        font-size: 1.2rem;
+    }
+    
+    .calculation-step {
+        margin-bottom: 8px;
+        font-family: 'Courier New', monospace;
+    }
+    
+    .grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 25px;
+    }
+    
+    @media (max-width: 768px) {
+        .grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .header h1 {
+            font-size: 2rem;
+        }
+        
+        .form-container {
+            padding: 20px;
+        }
+    }
+    
+    .section-title {
+        background: #3498db;
+        color: white;
+        padding: 15px;
+        margin: 30px -40px 20px -40px;
+        font-size: 1.3rem;
+        font-weight: 600;
+    }
+    
+    .highlight-box {
+        background: #f39c12;
+        color: white;
+        padding: 15px;
+        border-radius: 8px;
+        margin: 15px 0;
+        font-weight: 600;
+    }
+</style>
+```
+
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>⚡ Risikovurdering CRL</h1>
+            <p>Beregning efter DS/HD 60364-4-443:2016+Ret. 1:2019 - Punkt 443.5</p>
+        </div>
+
+```
+    <div class="form-container">
+        <div class="info-box">
+            <h3>📏 Hvad skal måles?</h3>
+            <ul>
+                <li><strong>Målepunkt:</strong> Fra første overspændingsafleder i forsyningsnettet til installationens indgang</li>
+                <li><strong>Lavspænding:</strong> Under 1 kV (typisk 400V/230V)</li>
+                <li><strong>Højspænding:</strong> Over 1 kV (fx 10 kV, 20 kV)</li>
+                <li><strong>Luftledning:</strong> Kabler der hænger i luften på master/stolper</li>
+                <li><strong>Nedgravet kabel:</strong> Kabler der ligger i jorden eller i rør</li>
+            </ul>
+        </div>
+        
+        <div class="formula-display">
+            <strong>Formel:</strong> CRL = f<sub>env</sub> / (L<sub>p</sub> × N<sub>g</sub>)
+            <br><br>
+            <strong>Hvor:</strong> L<sub>p</sub> = 2×L<sub>PAL</sub> + L<sub>PCL</sub> + 0,4×L<sub>PAH</sub> + 0,2×L<sub>PCH</sub>
+            <br><br>
+            <strong>Grænseværdi:</strong> CRL ≥ 1000 → Ingen SPD påkrævet | CRL < 1000 → SPD påkrævet
+        </div>
+        
+        <form id="riskForm">
+            <div class="section-title">📐 Lavspændingsledninger (under 1 kV)</div>
+            
+            <div class="grid">
+                <div class="input-group">
+                    <label for="lpal">L<sub>PAL</sub> - Lavspændingsluftledning</label>
+                    <div class="unit-toggle">
+                        <input type="radio" name="lpal_unit" value="m" id="lpal_m" checked>
+                        <label for="lpal_m">meter</label>
+                        <input type="radio" name="lpal_unit" value="km" id="lpal_km">
+                        <label for="lpal_km">kilometer</label>
+                    </div>
+                    <input type="number" id="lpal" step="1" min="0" value="0" required>
+                    <div class="input-description">
+                        Luftledninger på lavspændingsniveau (kabler i luften på stolper/master)
+                    </div>
+                    <div class="measurement-guide">
+                        <strong>Måles fra:</strong> Sidste overspændingsafleder i nettet → til bygningens hovedtavle<br>
+                        <strong>Eksempel:</strong> Transformerstation → parcelhus via luftkabler = typisk 50-500m
+                    </div>
+                </div>
+                
+                <div class="input-group">
+                    <label for="lpcl">L<sub>PCL</sub> - Lavspændings jordkabel</label>
+                    <div class="unit-toggle">
+                        <input type="radio" name="lpcl_unit" value="m" id="lpcl_m" checked>
+                        <label for="lpcl_m">meter</label>
+                        <input type="radio" name="lpcl_unit" value="km" id="lpcl_km">
+                        <label for="lpcl_km">kilometer</label>
+                    </div>
+                    <input type="number" id="lpcl" step="1" min="0" value="0" required>
+                    <div class="input-description">
+                        Nedgravede kabler på lavspændingsniveau
+                    </div>
+                    <div class="measurement-guide">
+                        <strong>Måles fra:</strong> Sidste overspændingsafleder i nettet → til bygningens hovedtavle<br>
+                        <strong>Eksempel:</strong> Transformerstation → bygning via jordkabel = typisk 25-200m
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section-title">⚡ Højspændingsledninger (over 1 kV)</div>
+            
+            <div class="grid">
+                <div class="input-group">
+                    <label for="lpah">L<sub>PAH</sub> - Højspændingsluftledning</label>
+                    <div class="unit-toggle">
+                        <input type="radio" name="lpah_unit" value="m" id="lpah_m" checked>
+                        <label for="lpah_m">meter</label>
+                        <input type="radio" name="lpah_unit" value="km" id="lpah_km">
+                        <label for="lpah_km">kilometer</label>
+                    </div>
+                    <input type="number" id="lpah" step="1" min="0" value="0" required>
+                    <div class="input-description">
+                        Luftledninger på højspændingsniveau (10kV, 20kV osv.)
+                    </div>
+                    <div class="measurement-guide">
+                        <strong>Måles fra:</strong> Første overspændingsafleder i højspændingsnettet → til transformerstation<br>
+                        <strong>Eksempel:</strong> Regional/lokal transformerstation forbindelse = typisk 0.5-5 km
+                    </div>
+                </div>
+                
+                <div class="input-group">
+                    <label for="lpch">L<sub>PCH</sub> - Højspændings jordkabel</label>
+                    <div class="unit-toggle">
+                        <input type="radio" name="lpch_unit" value="m" id="lpch_m" checked>
+                        <label for="lpch_m">meter</label>
+                        <input type="radio" name="lpch_unit" value="km" id="lpch_km">
+                        <label for="lpch_km">kilometer</label>
+                    </div>
+                    <input type="number" id="lpch" step="1" min="0" value="0" required>
+                    <div class="input-description">
+                        Nedgravede kabler på højspændingsniveau
+                    </div>
+                    <div class="measurement-guide">
+                        <strong>Måles fra:</strong> Første overspændingsafleder i højspændingsnettet → til transformerstation<br>
+                        <strong>Eksempel:</strong> I tæt bebygget område med jordkabler = typisk 0.2-2 km
+                    </div>
+                </div>
+            </div>
+            
+            <div class="highlight-box">
+                ⚠️ <strong>Vigtigt:</strong> Hvis du er i tvivl om længderne, kontakt dit lokale elselskab eller en autoriseret elinstallatør
+            </div>
+            
+            <div class="section-title">🌍 Miljø og klimadata</div>
+            
+            <div class="grid">
+                <div class="input-group">
+                    <label for="environment">Miljøtype</label>
+                    <select id="environment" required>
+                        <option value="">Vælg miljøtype</option>
+                        <option value="850">Landmiljø og forstadsmiljø (f_env = 850)</option>
+                        <option value="850">Bymiljø (f_env = 850 × F)*</option>
+                    </select>
+                    <div class="input-description">
+                        Miljømæssig faktor fra tabel 443.1 i standarden<br>
+                        *F-koefficient for bymiljø ikke implementeret endnu
+                    </div>
+                </div>
+                
+                <div class="input-group">
+                    <label for="ng">N<sub>g</sub> - Lynnedslag per år</label>
+                    <input type="number" id="ng" step="0.1" min="0.1" value="2.5" required>
+                    <div class="input-description">
+                        Antal lynnedslag per km² per år i dit område
+                    </div>
+                    <div class="measurement-guide">
+                        <strong>Danmark standard:</strong> 2,5 lynnedslag/km²/år<br>
+                        <strong>Høj aktivitet:</strong> 3,0-4,0 (bjergområder, kystområder)<br>
+                        <strong>Lav aktivitet:</strong> 1,0-2,0 (visse indlandsområder)
+                    </div>
+                </div>
+            </div>
+            
+            <button type="submit" class="calculate-btn">⚡ Beregn CRL-værdi</button>
+        </form>
+        
+        <div id="result" class="result">
+            <!-- Resultat vises her -->
+        </div>
+    </div>
+</div>
+
+<script>
+    // Service Worker registrering for PWA
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function() {
+            navigator.serviceWorker.register('data:application/javascript;base64,Y29uc3QgQ0FDSEVfTkFNRSA9ICdjcmwtYXBwLXYxJzsKY29uc3QgdXJsc1RvQ2FjaGUgPSBbCiAgJy4vJywKXTsKCnNlbGYuYWRkRXZlbnRMaXN0ZW5lcignaW5zdGFsbCcsIGV2ZW50ID0+IHsKICBldmVudC53YWl0VW50aWwoCiAgICBjYWNoZXMub3BlbihDQUNIRV9OQU1FKQogICAgICAudGhlbihjYWNoZSA9PiB7CiAgICAgICAgcmV0dXJuIGNhY2hlLmFkZEFsbCh1cmxzVG9DYWNoZSk7CiAgICAgIH0pCiAgKTsKfSk7CgpzZWxmLmFkZEV2ZW50TGlzdGVuZXIoJ2ZldGNoJywgZXZlbnQgPT4gewogIGV2ZW50LnJlc3BvbmRXaXRoKAogICAgY2FjaGVzLm1hdGNoKGV2ZW50LnJlcXVlc3QpCiAgICAgIC50aGVuKHJlc3BvbnNlID0+IHsKICAgICAgICByZXR1cm4gcmVzcG9uc2UgfHwgZmV0Y2goZXZlbnQucmVxdWVzdCk7CiAgICAgIH0pCiAgKTsKfSk7')
+            .then(function(registration) {
+                console.log('Service Worker registered successfully:', registration.scope);
+            }).catch(function(error) {
+                console.log('Service Worker registration failed:', error);
+            });
+        });
+    }
+
+    // PWA Install prompt
+    let deferredPrompt;
+    const installBtn = document.createElement('button');
+    installBtn.textContent = '📱 Installer som app';
+    installBtn.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: #27ae60;
+        color: white;
+        border: none;
+        padding: 12px 20px;
+        border-radius: 25px;
+        font-weight: bold;
+        cursor: pointer;
+        z-index: 1000;
+        display: none;
+        box-shadow: 0 4px 12px rgba(39, 174, 96, 0.3);
+        transition: all 0.3s ease;
+    `;
+    
+    installBtn.addEventListener('mouseover', function() {
+        this.style.transform = 'translateY(-2px)';
+        this.style.boxShadow = '0 6px 20px rgba(39, 174, 96, 0.4)';
+    });
+    
+    installBtn.addEventListener('mouseout', function() {
+        this.style.transform = 'translateY(0)';
+        this.style.boxShadow = '0 4px 12px rgba(39, 174, 96, 0.3)';
+    });
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        installBtn.style.display = 'block';
+        document.body.appendChild(installBtn);
+    });
+
+    installBtn.addEventListener('click', async () => {
+        if (deferredPrompt) {
+            deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice;
+            console.log(`User response to the install prompt: ${outcome}`);
+            deferredPrompt = null;
+            installBtn.style.display = 'none';
+        }
+    });
+
+    // Hide install button when app is installed
+    window.addEventListener('appinstalled', (evt) => {
+        console.log('App was installed');
+        installBtn.style.display = 'none';
+    });
+
+    document.getElementById('riskForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Hent inputværdier og konverter til km
+        const lpal_value = parseFloat(document.getElementById('lpal').value) || 0;
+        const lpal_unit = document.querySelector('input[name="lpal_unit"]:checked').value;
+        const lpal = lpal_unit === 'm' ? lpal_value / 1000 : lpal_value;
+        
+        const lpcl_value = parseFloat(document.getElementById('lpcl').value) || 0;
+        const lpcl_unit = document.querySelector('input[name="lpcl_unit"]:checked').value;
+        const lpcl = lpcl_unit === 'm' ? lpcl_value / 1000 : lpcl_value;
+        
+        const lpah_value = parseFloat(document.getElementById('lpah').value) || 0;
+        const lpah_unit = document.querySelector('input[name="lpah_unit"]:checked').value;
+        const lpah = lpah_unit === 'm' ? lpah_value / 1000 : lpah_value;
+        
+        const lpch_value = parseFloat(document.getElementById('lpch').value) || 0;
+        const lpch_unit = document.querySelector('input[name="lpch_unit"]:checked').value;
+        const lpch = lpch_unit === 'm' ? lpch_value / 1000 : lpch_value;
+        
+        const fenv = parseFloat(document.getElementById('environment').value);
+        const ng = parseFloat(document.getElementById('ng').value);
+        
+        if (!fenv || !ng) {
+            alert('Indtast venligst alle påkrævede værdier');
+            return;
+        }
+        
+        // Beregn Lp (risikovurderingslængden)
+        const lp = (2 * lpal) + lpcl + (0.4 * lpah) + (0.2 * lpch);
+        
+        // Beregn CRL
+        let crl;
+        if (lp === 0) {
+            crl = Infinity;
+        } else {
+            crl = fenv / (lp * ng);
+        }
+        
+        // Afgør om beskyttelse er nødvendig
+        const protectionNeeded = crl < 1000;
+        
+        // Vis resultat
+        displayResult(crl, protectionNeeded, lp, fenv, ng, {
+            lpal: {value: lpal_value, unit: lpal_unit}, 
+            lpcl: {value: lpcl_value, unit: lpcl_unit}, 
+            lpah: {value: lpah_value, unit: lpah_unit}, 
+            lpch: {value: lpch_value, unit: lpch_unit}
+        });
+    });
+    
+    function displayResult(crl, protectionNeeded, lp, fenv, ng, lengths) {
+        const resultDiv = document.getElementById('result');
+        
+        const resultClass = protectionNeeded ? 'unsafe' : 'safe';
+        const statusIcon = protectionNeeded ? '⚠️' : '✅';
+        const statusText = protectionNeeded ? 
+            'SPD (overspændingsafleder) ER PÅKRÆVET' : 
+            'SPD (overspændingsafleder) er IKKE påkrævet';
+        
+        const crlDisplay = crl === Infinity ? '∞' : crl.toFixed(2);
+        
+        resultDiv.className = `result ${resultClass}`;
+        resultDiv.innerHTML = `
+            <h3>${statusIcon} ${statusText}</h3>
+            <div class="crl-value">CRL = ${crlDisplay}</div>
+            <p><strong>Grænseværdi:</strong> CRL ≥ 1000 for ingen beskyttelse</p>
+            
+            <div class="calculation-details">
+                <h4>🧮 Beregningsdetaljer:</h4>
+                <div class="calculation-step">Inputværdier i ${lengths.lpal.unit === 'm' ? 'meter' : 'kilometer'}:</div>
+                <div class="calculation-step">L_PAL = ${lengths.lpal.value} ${lengths.lpal.unit}, L_PCL = ${lengths.lpcl.value} ${lengths.lpcl.unit}</div>
+                <div class="calculation-step">L_PAH = ${lengths.lpah.value} ${lengths.lpah.unit}, L_PCH = ${lengths.lpch.value} ${lengths.lpch.unit}</div>
+                <div class="calculation-step"> </div>
+                <div class="calculation-step">L_p = 2×${(lp > 0 ? lengths.lpal.value * (lengths.lpal.unit === 'm' ? 1 : 1000) : 0)/1000} + ${(lp > 0 ? lengths.lpcl.value * (lengths.lpcl.unit === 'm' ? 1 : 1000) : 0)/1000} + 0.4×${(lp > 0 ? lengths.lpah.value * (lengths.lpah.unit === 'm' ? 1 : 1000) : 0)/1000} + 0.2×${(lp > 0 ? lengths.lpch.value * (lengths.lpch.unit === 'm' ? 1 : 1000) : 0)/1000}</div>
+                <div class="calculation-step">L_p = ${lp.toFixed(3)} km</div>
+                <div class="calculation-step">CRL = ${fenv} / (${lp.toFixed(3)} × ${ng})</div>
+                <div class="calculation-step">CRL = ${crlDisplay}</div>
+            </div>
+            
+            ${protectionNeeded ? `
+                <p style="margin-top: 20px; font-weight: bold; font-size: 1.1rem;">
+                    🔧 Der skal installeres SPD (overspændingsafleder) i henhold til IEC 62305
+                </p>
+                <p style="margin-top: 10px;">
+                    Kontakt en autoriseret elinstallatør for korrekt installation
+                </p>
+            ` : `
+                <p style="margin-top: 20px; font-weight: bold; font-size: 1.1rem;">
+                    👍 Installationen har tilstrækkelig beskyttelse mod transiente overspændinger
+                </p>
+                <p style="margin-top: 10px;">
+                    Ingen yderligere SPD-beskyttelse påkrævet på dette niveau
+                </p>
+            `}
+        `;
+        
+        // Animér resultat ind
+        setTimeout(() => {
+            resultDiv.classList.add('show');
+        }, 100);
+    }
+</script>
+```
+
+</body>
+</html>
